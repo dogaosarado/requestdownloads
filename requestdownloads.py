@@ -50,3 +50,4 @@ for link in colunas:
         print(strptime())
 
 print(colunas)
+# teste
