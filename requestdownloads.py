@@ -1,53 +1,22 @@
 import os
 import requests
-from requests_html import HTML, HTMLSession
 from time import strptime
-
-
-session = HTMLSession()
 
 main_url = 'http://37.156.146.163/PUB/Pentester_Academy/Pentester_Academy_Web_Application_Pentesting/Pentester_Academy_Web_Application_Pentesting_ITGEEKS/'
 arquivos_pasta = os.listdir('H:\projeto gustavinho proxy')
 print(arquivos_pasta)
-r = session.get(main_url)
-colunas = r.html.find('a')
+response = request.get(main_url)
+colunas = response.html.find('a')
+# Tupla de extensoes a serem baixadas
+extensoes = ('.zip', '.mp4', '.pdf', '.html', '.php')
+# Funcao para verificar se algum link possui alguma das extensoes a serem baixadas.
+# Retorna True caso encontre, False no contrario 
+checar_extensao = lambda link: any((ext in link for ext in extensoes))
 for link in colunas:
-    if '.zip' in link.full_text:
-        download = requests.get(main_url + link.full_text, stream=True)
-        downloaded_file = open(link.full_text, "wb")
-        for chunk in download.iter_content(chunk_size=2048):
-            if chunk:
-                downloaded_file.write(chunk)
-        print('foi ok um abraço: ', strptime())
-    if '.mp4' in link.full_text:
-        download = requests.get(main_url + link.full_text, stream=True)
-        downloaded_file = open(link.full_text, "wb")
-        for chunk in download.iter_content(chunk_size=2048):
-            if chunk:
-                downloaded_file.write(chunk)
-        print('foi ok um abraço: ', strptime())
-    if '.pdf' in link.full_text:
-        download = requests.get(main_url + link.full_text, stream=True)
-        downloaded_file = open(link.full_text, "wb")
-        for chunk in download.iter_content(chunk_size=2048):
-            if chunk:
-                downloaded_file.write(chunk)
-        print('foi ok um abraço: ', strptime())
-    if '.html' in link.full_text:
-        download = requests.get(main_url + link.full_text, stream=True)
-        downloaded_file = open(link.full_text, "wb")
-        for chunk in download.iter_content(chunk_size=2048):
-            if chunk:
-                downloaded_file.write(chunk)
-        print('foi ok um abraço: ', strptime())
-    if '.php' in link.full_text:
-        download = requests.get(main_url + link.full_text, stream=True)
-        downloaded_file = open(link.full_text, "wb")
-        for chunk in download.iter_content(chunk_size=2048):
-            if chunk:
-                downloaded_file.write(chunk)
+    if checar_extensao(link.full_text):
+        response = request.get(main_url + link.full_text)
+        with open(link.full_text, "wb") as downloaded_file:
+            downloaded_file.write(response.content)
         print('foi ok um abraço: ', link.full_text)
         print(strptime())
-
 print(colunas)
-# teste
